@@ -16,11 +16,16 @@
 
 package cherry.base.web.autoconfigure;
 
+import cherry.base.web.app.healthcheck.HealthcheckController;
+import cherry.base.web.app.healthcheck.HealthcheckService;
 import cherry.base.web.interceptor.TraceInterceptor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+
+import java.util.function.Supplier;
 
 @AutoConfiguration
 public class BaseWebAutoConfiguration {
@@ -43,5 +48,22 @@ public class BaseWebAutoConfiguration {
                 exitMessage,
                 exceptionMessage
         );
+    }
+
+    static class Healthcheck {
+
+        @Bean
+        @ConditionalOnMissingBean(name = "healthcheckController")
+        public HealthcheckController healthcheckController(
+                @Qualifier("healthcheckService") Supplier<Boolean> healthcheckService
+        ) {
+            return new HealthcheckController(healthcheckService);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean(name = "healthcheckService")
+        public Supplier<Boolean> healthcheckService() {
+            return new HealthcheckService();
+        }
     }
 }
