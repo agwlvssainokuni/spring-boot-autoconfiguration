@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package cherry.base.web.app.healthcheck;
+package cherry.derived.web.app.healthcheck;
 
 import cherry.base.web.annotation.TraceInterceptor;
+import org.springframework.stereotype.Service;
 
+import java.util.function.Supplier;
+
+@Service("healthcheckService")
 @TraceInterceptor
-public class HealthcheckServiceImpl implements HealthcheckService {
+public class HealthcheckService implements Supplier<Boolean> {
 
     @Override
-    public boolean isHealthy() {
-        return true;
+    public Boolean get() {
+        return false;
     }
 
 }
