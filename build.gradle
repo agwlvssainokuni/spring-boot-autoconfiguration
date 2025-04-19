@@ -58,6 +58,7 @@ subprojects {
     dependencies {
         if (project.name == 'base-web') {
             implementation 'org.springframework.boot:spring-boot-starter-web'
+            implementation 'org.springframework.boot:spring-boot-starter-aop'
         }
         if (project.name == 'base-app') {
             implementation project(':base:base-web')

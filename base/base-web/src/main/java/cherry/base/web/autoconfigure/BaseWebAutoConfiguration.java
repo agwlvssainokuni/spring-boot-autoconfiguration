@@ -16,8 +16,32 @@
 
 package cherry.base.web.autoconfigure;
 
+import cherry.base.web.interceptor.TraceInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
 public class BaseWebAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean(name = "traceInterceptor")
+    public TraceInterceptor traceInterceptor(
+            @Value("${traceInterceptor.useDynamicLogger}") boolean useDynamicLogger,
+            @Value("${traceInterceptor.hideProxyClassNames}") boolean hideProxyClassNames,
+            @Value("${traceInterceptor.logExceptionStackTrace}") boolean logExceptionStackTrace,
+            @Value("${traceInterceptor.enterMessage}") String enterMessage,
+            @Value("${traceInterceptor.exitMessage}") String exitMessage,
+            @Value("${traceInterceptor.exceptionMessage}") String exceptionMessage
+    ) {
+        return new TraceInterceptor(
+                useDynamicLogger,
+                hideProxyClassNames,
+                logExceptionStackTrace,
+                enterMessage,
+                exitMessage,
+                exceptionMessage
+        );
+    }
 }
