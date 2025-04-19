@@ -1,0 +1,4 @@
+include ':base:base-web'
+include ':base:base-app'
+include ':derived:derived-web'
+include ':derived:derived-app'
